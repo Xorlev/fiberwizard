@@ -1,0 +1,35 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+sourceCompatibility = 1.8
+version = '1.0'
+
+repositories {
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/releases" }
+}
+
+configurations {
+    // ...
+    quasar
+}
+
+dependencies {
+    compile 'com.ning:async-http-client:1.8.9'
+    compile 'com.netflix.hystrix:hystrix-core:1.3.16'
+    compile 'com.netflix.rxjava:rxjava-quasar:0.18.4'
+    compile 'co.paralleluniverse:quasar-core:0.6.0-SNAPSHOT'
+    quasar 'co.paralleluniverse:quasar-core:0.6.0-SNAPSHOT'
+    compile 'co.paralleluniverse:comsat-dropwizard:0.2.0-SNAPSHOT'
+//    quasar 'co.paralleluniverse:quasar-core:0.6.0-SNAPSHOT'
+    compile group: 'junit', name: 'junit', version: '4.11'
+}
+
+mainClassName = "FiberApp"
+
+run {
+    args "server"
+    jvmArgs "-javaagent:${configurations.quasar.iterator().next()}", "-Xmx2G"
+//            "-XX:+FlightRecorder", "    -XX:+UnlockCommercialFeatures","-Xmx2G"
+}
